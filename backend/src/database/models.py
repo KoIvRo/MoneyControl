@@ -15,7 +15,7 @@ class User(Base):
     id = Column(Integer(), primary_key=True, autoincrement=True, index=True)
     name = Column(String(20))
     email = Column(String(30))
-    password = Column(String(128))
+    password = Column(String(256))
 
 
 class Account(Base):

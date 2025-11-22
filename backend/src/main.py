@@ -1,8 +1,11 @@
 import uvicorn
 from fastapi import FastAPI
 from database.database import create_db
+from middleware.middleware import JWTMiddleware
+
 
 app = FastAPI()
+app.add_middleware(JWTMiddleware)
 
 
 def main() -> None:
