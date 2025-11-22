@@ -1,0 +1,23 @@
+[project]
+name = "moneycontrol"
+version = "0.1.0"
+description = "Backend for MoneyConrol on FastApi"
+authors = [
+    {name = "Korotaev Ivan"}
+]
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi (>=0.121.3,<0.122.0)",
+    "pytest (>=9.0.1,<10.0.0)",
+    "uvicorn (>=0.38.0,<0.39.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+
+[tool.poetry.scripts]
+startserver = "uvicorn main:app --reload --host=0.0.0.0 --port=8000"
