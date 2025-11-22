@@ -1,16 +1,16 @@
 # Backend for MoneyControl
 
-Для запуска:
+## For start
 
-В папке проекта
+In backend directory
 ```
 poetry install
 poetry run startserver
 ```
 
-или
+or
 
-В папке src
+In src/
 ```
 uvicorn main:app --reload --host=0.0.0.0 --port=8000
 ```
