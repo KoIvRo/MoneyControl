@@ -11,7 +11,7 @@ auth_router = APIRouter()
 
 
 @auth_router.post("/register")
-async def register(user_data: UserRegistration, db: Session = Depends(get_db)) -> None:
+async def register(user_data: UserRegistration, db: Session = Depends(get_db)):
     """Эндпоинт для регистрации."""
     exsiting_user = db.query(User).filter(User.email == user_data.email).first()
     if exsiting_user:

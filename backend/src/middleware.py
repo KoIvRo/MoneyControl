@@ -28,4 +28,4 @@ class JWTMiddleware(BaseHTTPMiddleware):
             return JSONResponse({"code": 401, "detail": "Invalid token"})
 
         request.state.user = payload
-        return await call_next(payload)
+        return await call_next(request)

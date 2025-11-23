@@ -31,7 +31,7 @@ class Account(Base):
 class Transaction(Base):
     """Транзакции пользователя привязанные к счету."""
 
-    __tablename__ = "transaction"
+    __tablename__ = "transactions"
     id = Column(Integer(), primary_key=True, autoincrement=True, index=True)
     amount = Column(Numeric())
     category = Column(String(20))
