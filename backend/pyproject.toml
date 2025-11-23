@@ -1,0 +1,27 @@
+[tool.poetry]
+name = "backend"
+version = "0.1.0"
+description = ""
+authors = ["Korotav Ivan <korotaev.ir@dvfu.ru>"]
+readme = "README.md"
+packages = [
+    { include = "*", from = "src" }
+]
+
+
+[tool.poetry.dependencies]
+python = "^3.12"
+fastapi = "^0.121.3"
+uvicorn = "^0.38.0"
+sqlalchemy = "^2.0.44"
+pydantic = {extras = ["email"], version = "^2.12.4"}
+passlib = "^1.7.4"
+pyjwt = "^2.10.1"
+bcrypt = "^5.0.0"
+
+[tool.poetry.scripts]
+startserver = "main:main"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
