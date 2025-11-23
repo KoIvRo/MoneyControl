@@ -12,6 +12,7 @@ auth_router = APIRouter()
 
 @auth_router.post("/register")
 async def register(user_data: UserRegistration, db: Session = Depends(get_db)) -> None:
+    """Эндпоинт для регистрации."""
     exsiting_user = db.query(User).filter(User.email == user_data.email).first()
     if exsiting_user:
         raise HTTPException(status_code=400)
@@ -33,10 +34,11 @@ async def register(user_data: UserRegistration, db: Session = Depends(get_db)) -
 
 @auth_router.post("/login")
 async def login(user_data: UserLogin, db: Session = Depends(get_db)):
+    """Эндпоинт для логина."""
     exsiting_user = db.query(User).filter(User.email == user_data.email).first()
     if not exsiting_user:
         raise HTTPException(status_code=400)
-    
+
     if not verify_pass(user_data.password, exsiting_user.password):
         raise HTTPException(status_code=400)
 
