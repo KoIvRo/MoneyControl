@@ -1,5 +1,5 @@
 from sqlalchemy.orm import DeclarativeBase
-from sqlalchemy import Column, Integer, String, DateTime, Numeric, ForeignKey
+from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
 
 
 class Base(DeclarativeBase):
@@ -25,7 +25,7 @@ class Account(Base):
     id = Column(Integer(), primary_key=True, autoincrement=True, index=True)
     name = Column(String(20))
     balance = Column(Integer())
-    user_id = Column(Integer(), ForeignKey("users.id"))
+    user_id = Column(Integer(), ForeignKey("users.id", ondelete="CASCADE"))
 
 
 class Transaction(Base):
@@ -33,9 +33,9 @@ class Transaction(Base):
 
     __tablename__ = "transactions"
     id = Column(Integer(), primary_key=True, autoincrement=True, index=True)
-    amount = Column(Numeric())
+    amount = Column(Integer())
     category = Column(String(20))
     date = Column(DateTime())
     comment = Column(String(100))
-    account_id = Column(Integer(), ForeignKey("accounts.id"))
-    user_id = Column(Integer(), ForeignKey("users.id"))
+    account_id = Column(Integer(), ForeignKey("accounts.id", ondelete="CASCADE"))
+    user_id = Column(Integer(), ForeignKey("users.id", ondelete="CASCADE"))

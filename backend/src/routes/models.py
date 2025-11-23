@@ -1,4 +1,5 @@
 from pydantic import BaseModel, EmailStr
+from datetime import datetime
 
 
 class UserRegistration(BaseModel):
@@ -21,3 +22,13 @@ class AccountCreate(BaseModel):
 
     name: str
     balance: int
+
+
+class TransactionCreate(BaseModel):
+    """Модель для создания транзакции."""
+
+    amount: int
+    category: str
+    date: datetime
+    comment: str
+    account_id: int
