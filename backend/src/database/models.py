@@ -1,4 +1,4 @@
-from sqlalchemy.orm import DeclarativeBase
+from sqlalchemy.orm import DeclarativeBase, relationship
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
 
 
@@ -17,6 +17,10 @@ class User(Base):
     email = Column(String(30))
     password = Column(String(256))
 
+    accounts = relationship(
+        "Account", back_populates="user", cascade="all, delete-orphan"
+    )
+
 
 class Account(Base):
     """Банковские счета пользователя в базе данных."""
@@ -26,6 +30,11 @@ class Account(Base):
     name = Column(String(20))
     balance = Column(Integer())
     user_id = Column(Integer(), ForeignKey("users.id", ondelete="CASCADE"))
+
+    user = relationship("User", back_populates="accounts")
+    transactions = relationship(
+        "Transaction", back_populates="account", cascade="all, delete-orphan"
+    )
 
 
 class Transaction(Base):
@@ -39,3 +48,5 @@ class Transaction(Base):
     comment = Column(String(100))
     account_id = Column(Integer(), ForeignKey("accounts.id", ondelete="CASCADE"))
     user_id = Column(Integer(), ForeignKey("users.id", ondelete="CASCADE"))
+
+    account = relationship("Account", back_populates="transactions")

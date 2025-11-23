@@ -15,11 +15,15 @@ async def me(request: Request, db: Session = Depends(get_db)):
     exsiting_user = db.query(User).filter(User.id == request_user["user_id"]).first()
     if not exsiting_user:
         raise HTTPException("Invalid token")
-    
+
     accounts = db.query(Account).filter(Account.user_id == exsiting_user.id).all()
-    transactions = db.query(Transaction).filter(Transaction.user_id == exsiting_user.id).all()
-    
-    return {"email": exsiting_user.email, 
-            "name": exsiting_user.name,
-            "accounts": accounts,
-            "transactions": transactions}
+    transactions = (
+        db.query(Transaction).filter(Transaction.user_id == exsiting_user.id).all()
+    )
+
+    return {
+        "email": exsiting_user.email,
+        "name": exsiting_user.name,
+        "accounts": accounts,
+        "transactions": transactions,
+    }

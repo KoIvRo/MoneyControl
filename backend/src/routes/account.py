@@ -12,8 +12,11 @@ account_router = APIRouter()
 async def account(id: int, request: Request, db: Session = Depends(get_db)):
     """Информация об аккаунте."""
     request_user = request.state.user
-    
+
     account = db.query(Account).filter(Account.id == id).first()
+
+    if not account:
+        raise HTTPException(status_code=404)
 
     if account.user_id != request_user["user_id"]:
         raise HTTPException(status_code=401)
@@ -22,20 +25,20 @@ async def account(id: int, request: Request, db: Session = Depends(get_db)):
 
 
 @account_router.post("/")
-async def create_account(data: AccountCreate, request: Request, db: Session = Depends(get_db)):
+async def create_account(
+    data: AccountCreate, request: Request, db: Session = Depends(get_db)
+):
     """Создание аккаунта."""
     request_user = request.state.user
 
     exsiting_user = db.query(User).filter(User.id == request_user["user_id"]).first()
     if not exsiting_user:
         raise HTTPException(status_code=401)
-    
+
     new_account = Account(
-        name = data.name,
-        balance=data.balance,
-        user_id=exsiting_user.id
+        name=data.name, balance=data.balance, user_id=exsiting_user.id
     )
-    
+
     db.add(new_account)
     db.commit()
     db.refresh(new_account)
@@ -52,10 +55,10 @@ async def delete_account(id: int, request: Request, db: Session = Depends(get_db
 
     if not account:
         raise HTTPException(status_code=404)
-    
+
     if account.user_id != request_user["user_id"]:
         raise HTTPException(status_code=401)
-    
+
     db.delete(account)
     db.commit()
 

@@ -12,7 +12,7 @@ def verify_jwt(token: str) -> dict:
         if payload.get("type") != "access":
             return None
         return payload
-    except:
+    except Exception:
         return None
 
 
