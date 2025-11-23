@@ -14,3 +14,10 @@ class UserLogin(BaseModel):
 
     email: EmailStr
     password: str
+
+
+class AccountCreate(BaseModel):
+    """Модель для создания счета."""
+
+    name: str
+    balance: int

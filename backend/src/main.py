@@ -2,6 +2,7 @@ import uvicorn
 from fastapi import FastAPI
 from routes.auth import auth_router
 from routes.user import user_router
+from routes.account import account_router
 from database.database import create_db
 from middleware import JWTMiddleware
 
@@ -11,6 +12,7 @@ app.add_middleware(JWTMiddleware)
 
 app.include_router(auth_router, prefix="/auth")
 app.include_router(user_router, prefix="/user")
+app.include_router(account_router, prefix="/account")
 
 
 def main() -> None:
