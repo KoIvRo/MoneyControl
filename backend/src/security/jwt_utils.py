@@ -16,5 +16,7 @@ def verify_jwt(token: str) -> dict:
         return None
 
 
-def create_jwt():
-    pass
+def create_token(user_id: int):
+    payload = {"user_id": user_id, "type": "access"}
+
+    return jwt.encode(payload, SECRET_KEY, algorithm=ALGORITHM)
