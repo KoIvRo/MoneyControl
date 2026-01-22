@@ -1,70 +1,135 @@
-# Getting Started with Create React App
+#Frontend for MoneyControl
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+##For start
 
-## Available Scripts
+In frontend directory
+```
 
-In the project directory, you can run:
+text
+npm install
+npm start
+```
 
-### `npm start`
+or 
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+with docker
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+In frontend/
+```
 
-### `npm test`
+text
+docker build -t frontend .
+docker run -p 3000:3000 frontend
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+##Page
 
-### `npm run build`
+###Authentication
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+/login - Login page
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+/register - Registration page
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+###Main Pages
+/ - Home page
 
-### `npm run eject`
+/analytics - Analytics page
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+/transactions - Transactions page
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+/settings - Settings page
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+##Features
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+###Authentication
 
-## Learn More
+For authentication using JWT token stored in localStorage.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+###Home Page
+Display total balance
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Quick expense buttons by category
 
-### Code Splitting
+Recent transactions (last 5)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+Add income/expense functionality
 
-### Analyzing the Bundle Size
+###Analytics Page
+Income/expense pie charts by category
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+Monthly trends line chart
 
-### Making a Progressive Web App
+Filter by time period (month/year/all)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+Statistics overview
 
-### Advanced Configuration
+###Transactions Page
+Full transaction history
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+Filter by type (income/expense), category, date
 
-### Deployment
+Add/delete transactions
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+Monthly summary
 
-### `npm run build` fails to minify
+###Settings Page
+User profile display
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Data export to JSON
+
+Account logout
+
+App information
+```
+
+##Component Structure
+
+###Pages
+HomePage.js - Main dashboard with balance and quick actions
+
+AnalyticsPage.js - Financial charts and statistics
+
+TransactionsPage.js - Transaction history with filters
+
+SettingsPage.js - User settings and profile
+
+LoginPage.js - User authentication
+
+RegisterPage.js - New user registration
+
+DashboardLayout.js - Desktop layout wrapper
+
+###Components
+ChartComponent.js - ECharts wrapper for data visualization
+
+FooterNav.js - Mobile bottom navigation
+
+CategoryItem.js - Category button for quick expenses
+
+TransactionItem.js - Single transaction display
+
+AddTransactionModal.js - Modal for adding transactions
+
+BalanceCard.js - Balance display card
+
+InputField.js - Form input with validation
+
+###Context
+AuthContext.js - Authentication and user state management
+
+###Services
+api.js - HTTP client for backend API communication
+
+##Tools
+React 19.2.3
+
+React Router DOM 7.12.0
+
+ECharts 5.4.1
+
+Font Awesome 6.4.0
+
+Create React App 5.0.1
+
+###Made by
+Romanov Yaroslav
