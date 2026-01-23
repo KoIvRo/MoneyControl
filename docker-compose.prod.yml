@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"
+    command: sh -c "npm run build && npm install -g serve && serve -s build"
+
+  backend:
+    build: ./backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend/database.db:/app/database.db
