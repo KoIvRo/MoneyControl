@@ -21,7 +21,7 @@ MoneyControl/
 
 ## About
 
-MoneyControl is a web application for personal finance management. The system consists of backend API and frontend React application.
+MoneyControl is a web application for personal finance management. The system consists of backend API and frontend React application. Authorization made with PyJWT and redis for token blacklist.
 
 ## Backend
 
@@ -31,7 +31,7 @@ The backend provides REST API for user authentication and financial management.
 
 * Python 3.12
 * FastAPI
-* SQLite
+* PostgreSQL
 * SQLAlchemy
 * PyJWT
 * Poetry for dependency management
@@ -67,28 +67,6 @@ Services:
 Features:
 * Frontend optimized production build
 * Files copied into containers
-
-## Manual Setup
-
-### Backend Setup
-
-```bash
-cd backend
-poetry install
-poetry run startserver
-```
-
-### Frontend Setup
-
-```bash
-cd frontend
-npm install
-npm start
-```
-
-### Developer
-
-* Ivan Korotaev
 
 #### FEFU 2025/2026
 
