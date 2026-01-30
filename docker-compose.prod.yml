@@ -1,9 +1,30 @@
-version: '3.8'
-
 services:
+  postgres:
+    image: postgres:alpine
+    container_name: money_control_postgres
+    environment:
+      - POSTGRES_DB=moneycontrol
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - app-network
+    restart: unless-stopped
+    healthcheck:
+      test: >
+        bash -c '
+        psql -U admin -d moneycontrol -c "SELECT 1" || exit 1
+        '
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
   redis:
     image: redis:alpine
-    container_name: money_control_dev_redis
+    container_name: money_control_redis
     ports:
       - "6379:6379"
     networks:
@@ -25,14 +46,21 @@ services:
       - "8000:8000"
     networks:
       - app-network
-    volumes:
-      - ./backend/database.db:/app/database.db
     depends_on:
-      - redis
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
     environment:
       - REDIS_HOST=redis
       - REDIS_PORT=6379
-
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=moneycontrol
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin
 networks:
   app-network:
     driver: bridge
+volumes:
+  postgres_data:

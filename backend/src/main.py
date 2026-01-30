@@ -1,4 +1,5 @@
 import uvicorn
+import time
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from routes.auth import auth_router
@@ -29,6 +30,7 @@ app.include_router(transaction_router, prefix="/transaction")
 
 def main() -> None:
     """Точка запуска REST API."""
+    time.sleep(10) # Ждем запуск постгреса
     create_db()
     uvicorn.run("main:app", reload=True, host="0.0.0.0", port=8000)
 

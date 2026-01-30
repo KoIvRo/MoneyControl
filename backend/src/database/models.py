@@ -1,18 +1,13 @@
-from sqlalchemy.orm import DeclarativeBase, relationship
+from sqlalchemy.orm import relationship
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
-
-
-class Base(DeclarativeBase):
-    """Класс для ORM базы данных."""
-
-    pass
+from .database import Base
 
 
 class User(Base):
     """Модель аккаунта пользователя в базе данных."""
 
     __tablename__ = "users"
-    id = Column(Integer(), primary_key=True, autoincrement=True, index=True)
+    id = Column(Integer(), primary_key=True, index=True)
     name = Column(String(20))
     email = Column(String(30))
     password = Column(String(256))
