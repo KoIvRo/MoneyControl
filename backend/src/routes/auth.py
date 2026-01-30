@@ -1,10 +1,11 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Header
 from sqlalchemy.orm import Session
 from database.database import get_db
 from database.models import User
 from .models import UserRegistration, UserLogin
 from security.pass_utils import get_pass_hash, verify_pass
 from security.jwt_utils import create_token
+from .redis import RedisBlacklist
 
 
 auth_router = APIRouter()
@@ -45,3 +46,15 @@ async def login(user_data: UserLogin, db: Session = Depends(get_db)):
     access_token = create_token(exsiting_user.id)
 
     return {"access": access_token}
+
+@auth_router.post("/logout")
+async def logout(authorization: str = Header(None)):
+    if not authorization:
+        raise HTTPException(status_code=401, detail="No token")
+    
+    if not authorization.startswith("Bearer "):
+        raise HTTPException(status_code=401, detail="Invalid token format")
+    
+    access_token = authorization.split(" ")[1]
+    await RedisBlacklist.add_token(access_token)
+    return {"message": "Logged out"}
