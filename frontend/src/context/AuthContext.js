@@ -86,12 +86,10 @@ export const AuthProvider = ({ children }) => {
                 throw new Error('Пароль должен содержать минимум 6 символов');
             }
             
-            const newUser = {
-                id: Date.now(),
-                email: email,
-                name: email.split('@')[0] || 'Пользователь',
-                created_at: new Date().toISOString()
-            };
+            // ПРОБУЕМ ЗАЛОГИНИТЬСЯ ЧЕРЕЗ API
+            await api.login(email, password);
+            
+            // ЕСЛИ ДОШЛО СЮДА - ПОЛЬЗОВАТЕЛЬ СУЩЕСТВУЕТ В БЭКЕНДЕ
             
             const savedUserKey = `user_${email}`;
             const savedTransactionsKey = `transactions_${email}`;
@@ -115,6 +113,13 @@ export const AuthProvider = ({ children }) => {
                     userAccounts = JSON.parse(savedAccounts);
                 }
             } else {
+                // Создаем нового пользователя
+                const newUser = {
+                    id: Date.now(),
+                    email: email,
+                    name: email.split('@')[0] || 'Пользователь',
+                    created_at: new Date().toISOString()
+                };
                 setUser(newUser);
                 userTransactions = [];
                 userAccounts = [
@@ -130,14 +135,16 @@ export const AuthProvider = ({ children }) => {
             localStorage.setItem('token', demoToken);
             localStorage.setItem('current_user_email', email);
             
-            saveToLocalStorage(newUser, userTransactions, userAccounts);
+            saveToLocalStorage(user, userTransactions, userAccounts);
             
             setTransactions(userTransactions);
             setAccounts(userAccounts);
             
             return { success: true };
         } catch (err) {
-            const errorMessage = err.message || 'Неверный email или пароль';
+            // ЕСЛИ ОШИБКА API - НЕ СОЗДАЕМ ПОЛЬЗОВАТЕЛЯ
+            console.log('Login API error:', err.message);
+            const errorMessage = 'Неверный email или пароль';
             setError(errorMessage);
             return { success: false, error: errorMessage };
         } finally {
@@ -160,6 +167,11 @@ export const AuthProvider = ({ children }) => {
             if (initialBalance < 0) {
                 throw new Error('Начальный баланс не может быть отрицательным');
             }
+            
+            // ПРОБУЕМ ЗАРЕГИСТРИРОВАТЬСЯ ЧЕРЕЗ API
+            await api.register(email, password, name);
+            
+            // ЕСЛИ ДОШЛО СЮДА - РЕГИСТРАЦИЯ УСПЕШНА
             
             const newUser = {
                 id: Date.now(),
@@ -197,7 +209,10 @@ export const AuthProvider = ({ children }) => {
             
             return { success: true };
         } catch (err) {
-            const errorMessage = err.message || 'Ошибка регистрации';
+            console.log('Register API error:', err.message);
+            const errorMessage = err.message.includes('HTTP 400') 
+                ? 'Пользователь с таким email уже существует' 
+                : 'Ошибка регистрации';
             setError(errorMessage);
             return { success: false, error: errorMessage };
         } finally {
@@ -205,23 +220,18 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
-    // ИЗМЕНИ ЭТУ ФУНКЦИЮ
     const logout = async () => {
         try {
-            // Отправляем запрос на бекенд для добавления токена в blacklist
             await api.logout();
         } catch (error) {
             console.error('Logout API error:', error);
-            // Даже если запрос упал, продолжаем очистку фронтенда
         }
         
-        // Очищаем localStorage
         localStorage.removeItem('user');
         localStorage.removeItem('transactions');
         localStorage.removeItem('accounts');
         localStorage.removeItem('current_user_email');
         
-        // Сбрасываем state
         setUser(null);
         setTransactions([]);
         setAccounts([]);
