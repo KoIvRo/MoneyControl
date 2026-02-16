@@ -5,14 +5,7 @@ from redis.asyncio import Redis, ConnectionPool
 
 class RedisClient:
     """Управление соединения с redis."""
-    _instance = None
     _pool = None
-
-    def __new__(cls):
-        """Реализация singleton"""
-        if not cls._instance:
-            cls._instance = super().__new__(cls)
-        return cls._instance
     
     @classmethod
     async def get_client(cls) -> Redis:
